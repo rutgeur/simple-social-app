@@ -1,3 +1,4 @@
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
@@ -8,6 +9,8 @@ import 'package:simple_social_app/flows/landing-page/landing_page_widget.dart';
 import 'package:simple_social_app/flows/login/login_screen_widget.dart';
 import 'package:simple_social_app/flows/splash-screen/splash_screen_cubit.dart';
 import 'package:simple_social_app/flows/splash-screen/splash_screen_widget.dart';
+import 'package:simple_social_app/repository/api_client.dart';
+import 'package:simple_social_app/repository/api_repository.dart';
 
 void main() {
   runApp(MyApp());
@@ -52,7 +55,24 @@ class MyApp extends StatelessWidget {
             case '/home-screen':
               return PageTransition(
                   child: BlocProvider(
-                      create: (context) => HomeScreenCubit(),
+                      create: (context) => HomeScreenCubit(APIRepository(
+                          apiClient: APIClient(httpClient: http.Client()))),
+                      child: HomeScreenWidget()),
+                  type: PageTransitionType.rightToLeft,
+                  settings: settings);
+            case '/user-detail':
+              return PageTransition(
+                  child: BlocProvider(
+                      create: (context) => HomeScreenCubit(APIRepository(
+                          apiClient: APIClient(httpClient: http.Client()))),
+                      child: HomeScreenWidget()),
+                  type: PageTransitionType.rightToLeft,
+                  settings: settings);
+            case '/album':
+              return PageTransition(
+                  child: BlocProvider(
+                      create: (context) => HomeScreenCubit(APIRepository(
+                          apiClient: APIClient(httpClient: http.Client()))),
                       child: HomeScreenWidget()),
                   type: PageTransitionType.rightToLeft,
                   settings: settings);

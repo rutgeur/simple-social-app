@@ -1,3 +1,5 @@
+import 'package:simple_social_app/models/user_model.dart';
+
 class GetUserResponse {
   int id = 0;
   String name = "";
@@ -54,6 +56,10 @@ class GetUserResponse {
       data['company'] = this.company.toJson();
     }
     return data;
+  }
+
+  User toUser() {
+    return User();
   }
 }
 

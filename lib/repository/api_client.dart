@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:simple_social_app/helpers/constants.dart';
 import 'package:simple_social_app/models/api_exception.dart';
@@ -19,47 +20,30 @@ class APIClient {
 
   /// APIs needed for homepage
   Future<GetUserResponse> getUserSelf() async {
-    final uri = Uri.http(BASE_URL, "/users/$OWN_USER_ID");
-    Map<String, String> headers = {"Content-type": "application/json"};
-
-    final response = await this.httpClient.post(
-      uri,
-      headers: headers,
-    );
+    final uri = Uri.parse(BASE_URL + "/users/$OWN_USER_ID");
+    final response = await this.httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      return GetUserResponse.fromJson(
-          jsonDecode(response.body.toString()));
+      return GetUserResponse.fromJson(jsonDecode(response.body.toString()));
     }
 
     throw _handleHTTPException(response);
   }
 
-  Future<GetPosts> getPosts() async {
-    final uri = Uri.http(BASE_URL, "/posts");
-    Map<String, String> headers = {"Content-type": "application/json"};
-
-    final response = await this.httpClient.get(
-      uri,
-      headers: headers,
-    );
+  Future<GetPostsResponse> getPosts() async {
+    final uri = Uri.parse(BASE_URL + "/posts");
+    final response = await this.httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      return GetPosts.fromJson(
-          jsonDecode(response.body.toString()));
+      return GetPostsResponse.fromJson(jsonDecode(response.body.toString()));
     }
 
     throw _handleHTTPException(response);
   }
 
   Future<GetCommentsForPostResponse> getCommentsForPost(String postID) async {
-    final uri = Uri.http(BASE_URL, "/posts/$postID/comments");
-    Map<String, String> headers = {"Content-type": "application/json"};
-
-    final response = await this.httpClient.get(
-      uri,
-      headers: headers,
-    );
+    final uri = Uri.parse(BASE_URL + "/posts/$postID/comments");
+    final response = await this.httpClient.get(uri);
 
     if (response.statusCode == 200) {
       return GetCommentsForPostResponse.fromJson(
@@ -71,47 +55,30 @@ class APIClient {
 
   /// APIs needed for user detail page
   Future<GetUserResponse> getUser(String userID) async {
-    final uri = Uri.http(BASE_URL, "/users/$userID");
-    Map<String, String> headers = {"Content-type": "application/json"};
-
-    final response = await this.httpClient.post(
-      uri,
-      headers: headers,
-    );
+    final uri = Uri.parse(BASE_URL + "/users/$userID");
+    final response = await this.httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      return GetUserResponse.fromJson(
-          jsonDecode(response.body.toString()));
+      return GetUserResponse.fromJson(jsonDecode(response.body.toString()));
     }
 
     throw _handleHTTPException(response);
   }
 
   Future<GetPostsForUser> getPostsForUser(String userID) async {
-    final uri = Uri.http(BASE_URL, "/user/$userID/posts");
-    Map<String, String> headers = {"Content-type": "application/json"};
-
-    final response = await this.httpClient.post(
-      uri,
-      headers: headers,
-    );
+    final uri = Uri.parse(BASE_URL + "/user/$userID/posts");
+    final response = await this.httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      return GetPostsForUser.fromJson(
-          jsonDecode(response.body.toString()));
+      return GetPostsForUser.fromJson(jsonDecode(response.body.toString()));
     }
 
     throw _handleHTTPException(response);
   }
 
   Future<GetAlbumsForUserResponse> getAlbumsForUser(String userID) async {
-    final uri = Uri.http(BASE_URL, "/user/$userID/albums");
-    Map<String, String> headers = {"Content-type": "application/json"};
-
-    final response = await this.httpClient.post(
-      uri,
-      headers: headers,
-    );
+    final uri = Uri.parse(BASE_URL + "/user/$userID/albums");
+    final response = await this.httpClient.get(uri);
 
     if (response.statusCode == 200) {
       return GetAlbumsForUserResponse.fromJson(
@@ -123,13 +90,8 @@ class APIClient {
 
   /// Photo album detail page
   Future<GetPhotosForAlbumResponse> getPhotosForAlbum(String albumID) async {
-    final uri = Uri.http(BASE_URL, "/albums/$albumID/photos");
-    Map<String, String> headers = {"Content-type": "application/json"};
-
-    final response = await this.httpClient.get(
-      uri,
-      headers: headers,
-    );
+    final uri = Uri.parse(BASE_URL + "/albums/$albumID/photos");
+    final response = await this.httpClient.get(uri);
 
     if (response.statusCode == 200) {
       return GetPhotosForAlbumResponse.fromJson(

@@ -1,12 +1,12 @@
-class GetPosts {
+class GetPostsResponse {
   int userId = 0;
   int id = 0;
   String title = "";
   String body = "";
 
-  GetPosts({required this.userId, required this.id, required this.title, required this.body});
+  GetPostsResponse({required this.userId, required this.id, required this.title, required this.body});
 
-  GetPosts.fromJson(Map<String, dynamic> json) {
+  GetPostsResponse.fromJson(Map<String, dynamic> json) {
     userId = json['userId'];
     id = json['id'];
     title = json['title'];

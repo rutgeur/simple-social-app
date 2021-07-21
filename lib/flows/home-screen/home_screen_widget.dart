@@ -32,18 +32,22 @@ class HomeScreenWidget extends StatelessWidget {
         context.read<HomeScreenCubit>().logInAndRetrieveData();
       }
       if (state is Loading) {
-        // TODO: Show spinner
         return SpinKitChasingDots(
           color: Colors.blue,
           size: 50.0,
         );
       }
-      return Scaffold(
-          appBar: AppBar(),
-          drawer: _drawerContainer(context),
-          body: Container(
-            // color: Colors.pink,
-          ));
+      if (state is LoadedData) {
+        return Scaffold(
+            appBar: AppBar(),
+            drawer: _drawerContainer(context),
+            body: Container(
+              child: Center(
+                child: Text(state.user.name),
+              ),
+            ));
+      }
+      return Container();
     });
   }
 

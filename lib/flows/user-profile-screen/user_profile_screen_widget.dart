@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:simple_social_app/flows/album-screen/album_screen_widget.dart';
+import 'package:simple_social_app/flows/home-screen/home_screen_widget.dart';
 import 'package:simple_social_app/flows/post-screen/post_screen_widget.dart';
 import 'package:simple_social_app/flows/user-profile-screen/user_profile_screen_cubit.dart';
 import 'package:simple_social_app/models/album.dart';
@@ -56,6 +57,15 @@ class UserProfileScreenWidget extends StatelessWidget {
           appBar: AppBar(
             title: Text("Profile"),
             centerTitle: true,
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/back-to-home-screen');
+              },
+              child: Icon(
+                Icons.close,
+                color: Colors.white,
+              ),
+            ),
           ),
           body: Column(
             children: [
@@ -67,12 +77,6 @@ class UserProfileScreenWidget extends StatelessWidget {
       }
       return Container(
         color: Colors.white,
-        child: Center(
-          child: SpinKitChasingDots(
-            color: Colors.blue,
-            size: 50.0,
-          ),
-        ),
       );
     });
   }

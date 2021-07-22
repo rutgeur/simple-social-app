@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:simple_social_app/helpers/constants.dart';
 import 'package:simple_social_app/models/album.dart';
@@ -68,7 +69,7 @@ class APIClient {
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
-      return User.fromJson(jsonResponse[0]);
+      return User.fromJson(jsonResponse);
     }
 
     throw _handleHTTPException(response);

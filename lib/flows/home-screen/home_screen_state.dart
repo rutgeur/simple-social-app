@@ -15,6 +15,12 @@ class LoadedData extends HomeScreenState {
   LoadedData(this.user, this.posts);
 }
 
+class LoadedDataForProfile extends HomeScreenState {
+  final User user;
+
+  LoadedDataForProfile(this.user);
+}
+
 class Error extends HomeScreenState {}
 
 class LoggedOut extends HomeScreenState {}

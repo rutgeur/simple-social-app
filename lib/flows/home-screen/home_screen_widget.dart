@@ -29,6 +29,10 @@ class HomeScreenWidget extends StatelessWidget {
                 builder: (BuildContext context) => LandingPageWidget()),
             ModalRoute.withName('/landing-page'));
       }
+      if (state is LoadedDataForProfile) {
+        Navigator.pushNamed(context, '/user-profile',
+            arguments: UserProfileScreenWidgetArguments(state.user));
+      }
     }, builder: (context, state) {
       if (state is HomeScreenInitial) {
         context.read<HomeScreenCubit>().logInAndRetrieveData();
@@ -56,12 +60,6 @@ class HomeScreenWidget extends StatelessWidget {
       }
       return Container(
         color: Colors.white,
-        child: Center(
-          child: SpinKitChasingDots(
-            color: Colors.blue,
-            size: 50.0,
-          ),
-        ),
       );
     });
   }
@@ -134,11 +132,16 @@ class HomeScreenWidget extends StatelessWidget {
               Container(
                 width: 16,
               ),
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
+              GestureDetector(
+                onTap: () {
+                  context.read<HomeScreenCubit>().tappedOnProfilePicture(post.userId.toString());
+                },
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
+                ),
               ),
               Container(
                 width: 8,

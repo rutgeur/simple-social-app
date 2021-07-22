@@ -60,12 +60,6 @@ class PostScreenWidget extends StatelessWidget {
       }
       return Container(
         color: Colors.white,
-        child: Center(
-          child: SpinKitChasingDots(
-            color: Colors.blue,
-            size: 50.0,
-          ),
-        ),
       );
     });
   }

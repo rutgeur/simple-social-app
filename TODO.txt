@@ -1,5 +1,6 @@
 - remove android back button on certain screens
 - update error msgs
 - text field validation on create acc/login flow
-- link by clicking on profile pic
+- link by clicking on profile pic from comments
 - set profile pic images
+- fix animations when switching screens

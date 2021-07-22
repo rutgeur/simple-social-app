@@ -66,6 +66,14 @@ class MyApp extends StatelessWidget {
                       child: HomeScreenWidget()),
                   type: PageTransitionType.rightToLeft,
                   settings: settings);
+            case '/back-to-home-screen':
+              return PageTransition(
+                  child: BlocProvider(
+                      create: (context) => HomeScreenCubit(APIRepository(
+                          apiClient: APIClient(httpClient: http.Client()))),
+                      child: HomeScreenWidget()),
+                  type: PageTransitionType.fade,
+                  settings: settings);
             case '/post-screen':
               return PageTransition(
                   child: BlocProvider(

@@ -18,7 +18,6 @@ class UserProfileScreenCubit extends Cubit<UserProfileScreenState> {
       final posts = await _apiRepository.getPostsForUser(user.id.toString());
       final albums = await _apiRepository.getAlbumsForUser(user.id.toString());
       emit(LoadedData(posts, albums));
-      // emit(LoadedData(posts));
     } catch (APIError) {
       emit(Error());
     }

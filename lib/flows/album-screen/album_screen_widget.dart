@@ -62,12 +62,6 @@ class AlbumScreenWidget extends StatelessWidget {
       }
       return Container(
         color: Colors.white,
-        child: Center(
-          child: SpinKitChasingDots(
-            color: Colors.blue,
-            size: 50.0,
-          ),
-        ),
       );
     });
   }
@@ -119,7 +113,7 @@ class AlbumScreenWidget extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(20)),
           color: Color(0xFFe0f2f1),
         ),
-        child: Image.network(photo.url),
+        child: Image.network(photo.thumbnailUrl),
       ),
     );
   }

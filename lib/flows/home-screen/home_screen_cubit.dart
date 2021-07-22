@@ -26,6 +26,16 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
     }
   }
 
+  Future<void> tappedOnProfilePicture(String userID) async {
+    emit(Loading());
+    try {
+      final user = await _apiRepository.getUser(userID);
+      emit(LoadedDataForProfile(user));
+    } catch (APIError) {
+      emit(Error());
+    }
+  }
+
   Future<void> logOut() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool(LOGGED_IN_KEY, false);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:simple_social_app/flows/album-screen/album_screen_widget.dart';
 import 'package:simple_social_app/flows/post-screen/post_screen_widget.dart';
 import 'package:simple_social_app/flows/user-profile-screen/user_profile_screen_cubit.dart';
 import 'package:simple_social_app/models/album.dart';
@@ -302,8 +303,8 @@ class UserProfileScreenWidget extends StatelessWidget {
           ),
           TextButton(
               onPressed: () {
-                // Navigator.pushNamed(context, '/post-screen',
-                //     arguments: PostScreenWidgetArguments(post));
+                Navigator.pushNamed(context, '/album',
+                    arguments: AlbumScreenWidgetArguments(album));
               },
               child: Text("View Album"))
         ],

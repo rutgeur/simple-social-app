@@ -1,3 +1,5 @@
 - remove android back button on certain screens
 - update error msgs
 - text field validation on create acc/login flow
+- link by clicking on profile pic
+- set profile pic images

@@ -2,6 +2,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:simple_social_app/flows/album-screen/album_screen_cubit.dart';
+import 'package:simple_social_app/flows/album-screen/album_screen_widget.dart';
 import 'package:simple_social_app/flows/create-account/create_account_screen_widget.dart';
 import 'package:simple_social_app/flows/home-screen/home_screen_cubit.dart';
 import 'package:simple_social_app/flows/home-screen/home_screen_widget.dart';
@@ -83,9 +85,9 @@ class MyApp extends StatelessWidget {
             case '/album':
               return PageTransition(
                   child: BlocProvider(
-                      create: (context) => HomeScreenCubit(APIRepository(
+                      create: (context) => AlbumScreenCubit(APIRepository(
                           apiClient: APIClient(httpClient: http.Client()))),
-                      child: HomeScreenWidget()),
+                      child: AlbumScreenWidget()),
                   type: PageTransitionType.rightToLeft,
                   settings: settings);
             default:

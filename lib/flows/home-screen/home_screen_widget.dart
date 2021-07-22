@@ -4,13 +4,14 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:simple_social_app/flows/home-screen/home_screen_cubit.dart';
 import 'package:simple_social_app/flows/landing-page/landing_page_widget.dart';
+import 'package:simple_social_app/flows/post-screen/post_screen_widget.dart';
+import 'package:simple_social_app/models/post.dart';
 
 class HomeScreenWidget extends StatelessWidget {
   const HomeScreenWidget() : super();
 
   @override
   Widget build(BuildContext context) {
-    var _height = MediaQuery.of(context).size.height;
     return BlocConsumer<HomeScreenCubit, HomeScreenState>(
         listener: (context, state) {
       if (state is Error) {
@@ -32,22 +33,32 @@ class HomeScreenWidget extends StatelessWidget {
         context.read<HomeScreenCubit>().logInAndRetrieveData();
       }
       if (state is Loading) {
-        return SpinKitChasingDots(
-          color: Colors.blue,
-          size: 50.0,
+        return Container(
+          color: Colors.white,
+          child: Center(
+            child: SpinKitChasingDots(
+              color: Colors.blue,
+              size: 50.0,
+            ),
+          ),
         );
       }
       if (state is LoadedData) {
         return Scaffold(
-            appBar: AppBar(),
-            drawer: _drawerContainer(context),
-            body: Container(
-              child: Center(
-                child: Text(state.user.name),
-              ),
-            ));
+          appBar: AppBar(),
+          drawer: _drawerContainer(context),
+          body: Column(children: [_postsContainer(context, state)]),
+        );
       }
-      return Container();
+      return Container(
+        color: Colors.white,
+        child: Center(
+          child: SpinKitChasingDots(
+            color: Colors.blue,
+            size: 50.0,
+          ),
+        ),
+      );
     });
   }
 
@@ -75,4 +86,77 @@ class HomeScreenWidget extends StatelessWidget {
           ],
         ),
       );
+
+  Widget _postsContainer(BuildContext context, LoadedData state) {
+    return Expanded(
+        child: ListView.builder(
+      itemCount: state.posts.length,
+      itemBuilder: (context, position) {
+        return _postWidget(context, state.posts[position]);
+      },
+    ));
+  }
+
+  Widget _postWidget(BuildContext context, Post post) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 1.0, color: Colors.lightBlue.shade900),
+        ),
+        color: Colors.white,
+      ),
+      child: Column(
+        children: [
+          Container(
+            height: 8,
+          ),
+          Row(
+            children: [
+              Container(
+                width: 16,
+              ),
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
+              ),
+              Container(
+                width: 8,
+              ),
+              Flexible(
+                child: Text(
+                  post.title,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              )
+            ],
+          ),
+          Container(
+            height: 8,
+          ),
+          Row(
+            children: [
+              Container(
+                width: 16,
+              ),
+              Flexible(
+                child: Text(post.body,
+                    style: TextStyle(fontWeight: FontWeight.w400)),
+              )
+            ],
+          ),
+          Container(
+            height: 16,
+          ),
+          TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/post-screen',
+                    arguments: PostScreenWidgetArguments(post));
+              },
+              child: Text("View Comments"))
+        ],
+      ),
+    );
+  }
 }

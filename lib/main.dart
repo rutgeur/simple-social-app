@@ -7,6 +7,8 @@ import 'package:simple_social_app/flows/home-screen/home_screen_cubit.dart';
 import 'package:simple_social_app/flows/home-screen/home_screen_widget.dart';
 import 'package:simple_social_app/flows/landing-page/landing_page_widget.dart';
 import 'package:simple_social_app/flows/login/login_screen_widget.dart';
+import 'package:simple_social_app/flows/post-screen/post_screen_widget.dart';
+import 'package:simple_social_app/flows/post-screen/post_screen_cubit.dart';
 import 'package:simple_social_app/flows/splash-screen/splash_screen_cubit.dart';
 import 'package:simple_social_app/flows/splash-screen/splash_screen_widget.dart';
 import 'package:simple_social_app/repository/api_client.dart';
@@ -58,6 +60,14 @@ class MyApp extends StatelessWidget {
                       create: (context) => HomeScreenCubit(APIRepository(
                           apiClient: APIClient(httpClient: http.Client()))),
                       child: HomeScreenWidget()),
+                  type: PageTransitionType.rightToLeft,
+                  settings: settings);
+            case '/post-screen':
+              return PageTransition(
+                  child: BlocProvider(
+                      create: (context) => PostScreenCubit(APIRepository(
+                          apiClient: APIClient(httpClient: http.Client()))),
+                      child: PostScreenWidget()),
                   type: PageTransitionType.rightToLeft,
                   settings: settings);
             case '/user-detail':

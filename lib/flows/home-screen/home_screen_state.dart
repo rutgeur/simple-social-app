@@ -10,8 +10,9 @@ class Loading extends HomeScreenState {}
 
 class LoadedData extends HomeScreenState {
   final User user;
+  final List<Post> posts;
 
-  LoadedData(this.user);
+  LoadedData(this.user, this.posts);
 }
 
 class Error extends HomeScreenState {}

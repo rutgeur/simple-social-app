@@ -4,12 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:simple_social_app/helpers/constants.dart';
 import 'package:simple_social_app/models/api_exception.dart';
+import 'package:simple_social_app/models/comment.dart';
+import 'package:simple_social_app/models/post.dart';
+import 'package:simple_social_app/models/user.dart';
 import 'package:simple_social_app/repository/api_responses/get_albums_for_user_response.dart';
 import 'package:simple_social_app/repository/api_responses/get_comments_for_post_response.dart';
 import 'package:simple_social_app/repository/api_responses/get_photos_for_album.dart';
 import 'package:simple_social_app/repository/api_responses/get_posts_for_user_response.dart';
-import 'package:simple_social_app/repository/api_responses/get_posts_response.dart';
-import 'package:simple_social_app/repository/api_responses/get_user_response.dart';
 
 class APIClient {
   final http.Client httpClient;
@@ -19,47 +20,60 @@ class APIClient {
   });
 
   /// APIs needed for homepage
-  Future<GetUserResponse> getUserSelf() async {
+  Future<User> getUserSelf() async {
     final uri = Uri.parse(BASE_URL + "/users/$OWN_USER_ID");
     final response = await this.httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      return GetUserResponse.fromJson(jsonDecode(response.body.toString()));
+      final jsonResponse = json.decode(response.body);
+      return User.fromJson(jsonResponse);
     }
 
     throw _handleHTTPException(response);
   }
 
-  Future<GetPostsResponse> getPosts() async {
+  Future<List<Post>> getPosts() async {
     final uri = Uri.parse(BASE_URL + "/posts");
     final response = await this.httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      return GetPostsResponse.fromJson(jsonDecode(response.body.toString()));
+      final jsonResponse = json.decode(response.body);
+      List<Post> posts = [];
+      for(var i = 0; i < jsonResponse.length; i++){
+        posts.add(Post.fromJson(jsonResponse[i]));
+      }
+      return posts;
     }
 
     throw _handleHTTPException(response);
   }
 
-  Future<GetCommentsForPostResponse> getCommentsForPost(String postID) async {
+  Future<List<Comment>> getCommentsForPost(String postID) async {
     final uri = Uri.parse(BASE_URL + "/posts/$postID/comments");
     final response = await this.httpClient.get(uri);
 
+    debugPrint(response.body);
+
     if (response.statusCode == 200) {
-      return GetCommentsForPostResponse.fromJson(
-          jsonDecode(response.body.toString()));
+      final jsonResponse = json.decode(response.body);
+      List<Comment> comments = [];
+      for(var i = 0; i < jsonResponse.length; i++){
+        comments.add(Comment.fromJson(jsonResponse[i]));
+      }
+      return comments;
     }
 
     throw _handleHTTPException(response);
   }
 
   /// APIs needed for user detail page
-  Future<GetUserResponse> getUser(String userID) async {
+  Future<User> getUser(String userID) async {
     final uri = Uri.parse(BASE_URL + "/users/$userID");
     final response = await this.httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      return GetUserResponse.fromJson(jsonDecode(response.body.toString()));
+      final jsonResponse = json.decode(response.body);
+      return User.fromJson(jsonResponse[0]);
     }
 
     throw _handleHTTPException(response);

@@ -5,6 +5,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:simple_social_app/flows/home-screen/home_screen_cubit.dart';
 import 'package:simple_social_app/flows/landing-page/landing_page_widget.dart';
 import 'package:simple_social_app/flows/post-screen/post_screen_widget.dart';
+import 'package:simple_social_app/flows/user-profile-screen/user_profile_screen_widget.dart';
 import 'package:simple_social_app/models/post.dart';
 
 class HomeScreenWidget extends StatelessWidget {
@@ -18,7 +19,7 @@ class HomeScreenWidget extends StatelessWidget {
         Alert(
                 context: context,
                 title: "Error",
-                desc: "Something went wrong check logged in state")
+                desc: "Something went wrong retrieving data")
             .show();
       }
       if (state is LoggedOut) {
@@ -45,8 +46,11 @@ class HomeScreenWidget extends StatelessWidget {
       }
       if (state is LoadedData) {
         return Scaffold(
-          appBar: AppBar(),
-          drawer: _drawerContainer(context),
+          appBar: AppBar(
+            title: Text("News Feed"),
+            centerTitle: true,
+          ),
+          drawer: _drawerContainer(context, state),
           body: Column(children: [_postsContainer(context, state)]),
         );
       }
@@ -62,20 +66,35 @@ class HomeScreenWidget extends StatelessWidget {
     });
   }
 
-  Widget _drawerContainer(BuildContext context) => Drawer(
+  Widget _drawerContainer(BuildContext context, LoadedData state) => Drawer(
         child: ListView(
           children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Center(
-                  child: Container(
-                      width: double.infinity,
-                      child: Text(
-                        '',
-                        style: TextStyle(fontSize: 16.0),
-                      ))),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/user-profile',
+                    arguments: UserProfileScreenWidgetArguments(state.user));
+              },
+              child: DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  child: Row(children: [
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
+                    ),
+                    Container(
+                      width: 8,
+                    ),
+                    Container(
+                        // width: double.infinity,
+                        child: Text(
+                      state.user.username,
+                      style: TextStyle(fontSize: 16.0),
+                    )),
+                  ])),
             ),
             ListTile(
               title: Text('Log Out'),

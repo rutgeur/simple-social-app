@@ -1,16 +1,13 @@
 import 'dart:convert';
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:simple_social_app/helpers/constants.dart';
+import 'package:simple_social_app/models/album.dart';
 import 'package:simple_social_app/models/api_exception.dart';
 import 'package:simple_social_app/models/comment.dart';
+import 'package:simple_social_app/models/photo.dart';
 import 'package:simple_social_app/models/post.dart';
 import 'package:simple_social_app/models/user.dart';
-import 'package:simple_social_app/repository/api_responses/get_albums_for_user_response.dart';
-import 'package:simple_social_app/repository/api_responses/get_comments_for_post_response.dart';
-import 'package:simple_social_app/repository/api_responses/get_photos_for_album.dart';
-import 'package:simple_social_app/repository/api_responses/get_posts_for_user_response.dart';
 
 class APIClient {
   final http.Client httpClient;
@@ -52,8 +49,6 @@ class APIClient {
     final uri = Uri.parse(BASE_URL + "/posts/$postID/comments");
     final response = await this.httpClient.get(uri);
 
-    debugPrint(response.body);
-
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       List<Comment> comments = [];
@@ -79,37 +74,50 @@ class APIClient {
     throw _handleHTTPException(response);
   }
 
-  Future<GetPostsForUser> getPostsForUser(String userID) async {
+  Future<List<Post>> getPostsForUser(String userID) async {
     final uri = Uri.parse(BASE_URL + "/user/$userID/posts");
     final response = await this.httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      return GetPostsForUser.fromJson(jsonDecode(response.body.toString()));
+      final jsonResponse = json.decode(response.body);
+      List<Post> posts = [];
+      for(var i = 0; i < jsonResponse.length; i++){
+        posts.add(Post.fromJson(jsonResponse[i]));
+      }
+      return posts;
     }
 
     throw _handleHTTPException(response);
   }
 
-  Future<GetAlbumsForUserResponse> getAlbumsForUser(String userID) async {
+  Future<List<Album>> getAlbumsForUser(String userID) async {
     final uri = Uri.parse(BASE_URL + "/user/$userID/albums");
     final response = await this.httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      return GetAlbumsForUserResponse.fromJson(
-          jsonDecode(response.body.toString()));
+      final jsonResponse = json.decode(response.body);
+      List<Album> albums = [];
+      for(var i = 0; i < jsonResponse.length; i++){
+        albums.add(Album.fromJson(jsonResponse[i]));
+      }
+      return albums;
     }
 
     throw _handleHTTPException(response);
   }
 
   /// Photo album detail page
-  Future<GetPhotosForAlbumResponse> getPhotosForAlbum(String albumID) async {
+  Future<List<Photo>> getPhotosForAlbum(String albumID) async {
     final uri = Uri.parse(BASE_URL + "/albums/$albumID/photos");
     final response = await this.httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      return GetPhotosForAlbumResponse.fromJson(
-          jsonDecode(response.body.toString()));
+      final jsonResponse = json.decode(response.body);
+      List<Photo> photos = [];
+      for(var i = 0; i < jsonResponse.length; i++){
+        photos.add(Photo.fromJson(jsonResponse[i]));
+      }
+      return photos;
     }
 
     throw _handleHTTPException(response);

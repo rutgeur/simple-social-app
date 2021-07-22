@@ -26,7 +26,7 @@ class PostScreenWidget extends StatelessWidget {
         Alert(
                 context: context,
                 title: "Error",
-                desc: "Something went wrong check logged in state")
+                desc: "Something went wrong retrieving comments")
             .show();
       }
     }, builder: (context, state) {
@@ -46,10 +46,13 @@ class PostScreenWidget extends StatelessWidget {
       }
       if (state is LoadedData) {
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            title: Text("Post Details"),
+            centerTitle: true,
+          ),
           body: Column(
             children: [
-              _postWidgetTitle(context, args.post),
+              _postHeaderWidget(context, args.post),
               _commentsContainer(context, state),
             ],
           ),
@@ -67,7 +70,7 @@ class PostScreenWidget extends StatelessWidget {
     });
   }
 
-  Widget _postWidgetTitle(BuildContext context, Post post) {
+  Widget _postHeaderWidget(BuildContext context, Post post) {
     return Container(
       decoration: BoxDecoration(
         border: Border(

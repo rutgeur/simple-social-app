@@ -8,10 +8,11 @@ class UserProfileScreenInitial extends UserProfileScreenState {}
 class Loading extends UserProfileScreenState {}
 
 class LoadedData extends UserProfileScreenState {
+  final User user;
   final List<Post> posts;
   final List<Album> albums;
 
-  LoadedData(this.posts, this.albums);
+  LoadedData(this.user, this.posts, this.albums);
 }
 
 class Error extends UserProfileScreenState {}

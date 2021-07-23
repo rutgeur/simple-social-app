@@ -29,24 +29,9 @@ class HomeScreenWidget extends StatelessWidget {
                 builder: (BuildContext context) => LandingPageWidget()),
             ModalRoute.withName('/landing-page'));
       }
-      if (state is LoadedDataForProfile) {
-        Navigator.pushNamed(context, '/user-profile',
-            arguments: UserProfileScreenWidgetArguments(state.user));
-      }
     }, builder: (context, state) {
       if (state is HomeScreenInitial) {
         context.read<HomeScreenCubit>().logInAndRetrieveData();
-      }
-      if (state is Loading) {
-        return Container(
-          color: Colors.white,
-          child: Center(
-            child: SpinKitChasingDots(
-              color: Colors.blue,
-              size: 50.0,
-            ),
-          ),
-        );
       }
       if (state is LoadedData) {
         return Scaffold(
@@ -60,6 +45,12 @@ class HomeScreenWidget extends StatelessWidget {
       }
       return Container(
         color: Colors.white,
+        child: Center(
+          child: SpinKitChasingDots(
+            color: Colors.blue,
+            size: 50.0,
+          ),
+        ),
       );
     });
   }
@@ -70,7 +61,7 @@ class HomeScreenWidget extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, '/user-profile',
-                    arguments: UserProfileScreenWidgetArguments(state.user));
+                    arguments: UserProfileScreenWidgetArguments(state.user, null));
               },
               child: DrawerHeader(
                   decoration: BoxDecoration(
@@ -134,7 +125,8 @@ class HomeScreenWidget extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  context.read<HomeScreenCubit>().tappedOnProfilePicture(post.userId.toString());
+                  Navigator.pushNamed(context, '/user-profile',
+                      arguments: UserProfileScreenWidgetArguments(null, post.userId));
                 },
                 child: Container(
                   width: 60,

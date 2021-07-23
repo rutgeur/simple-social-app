@@ -12,12 +12,20 @@ class UserProfileScreenCubit extends Cubit<UserProfileScreenState> {
 
   UserProfileScreenCubit(this._apiRepository) : super(UserProfileScreenInitial());
 
-  Future<void> retrieveData(User user) async {
+  Future<void> retrieveData(User? user, int? userID) async {
     emit(Loading());
     try {
-      final posts = await _apiRepository.getPostsForUser(user.id.toString());
-      final albums = await _apiRepository.getAlbumsForUser(user.id.toString());
-      emit(LoadedData(posts, albums));
+      if (user != null) {
+        final posts = await _apiRepository.getPostsForUser(user.id.toString());
+        final albums = await _apiRepository.getAlbumsForUser(user.id.toString());
+        emit(LoadedData(user, posts, albums));
+      }
+      if (userID != null) {
+        final user = await _apiRepository.getUser(userID.toString());
+        final posts = await _apiRepository.getPostsForUser(userID.toString());
+        final albums = await _apiRepository.getAlbumsForUser(userID.toString());
+        emit(LoadedData(user, posts, albums));
+      }
     } catch (APIError) {
       emit(Error());
     }

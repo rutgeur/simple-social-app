@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:simple_social_app/flows/album-screen/album_screen_widget.dart';
-import 'package:simple_social_app/flows/home-screen/home_screen_widget.dart';
 import 'package:simple_social_app/flows/post-screen/post_screen_widget.dart';
 import 'package:simple_social_app/flows/user-profile-screen/user_profile_screen_cubit.dart';
 import 'package:simple_social_app/models/album.dart';
@@ -12,9 +11,10 @@ import 'package:simple_social_app/models/user.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 
 class UserProfileScreenWidgetArguments {
-  final User user;
+  final User? user;
+  final int? userID;
 
-  UserProfileScreenWidgetArguments(this.user);
+  UserProfileScreenWidgetArguments(this.user, this.userID);
 }
 
 class UserProfileScreenWidget extends StatelessWidget {
@@ -34,23 +34,12 @@ class UserProfileScreenWidget extends StatelessWidget {
             Alert(
                 context: context,
                 title: "Error",
-                desc: "Something went wrong check logged in state")
+                desc: "Something went wrong retrieving data")
                 .show();
           }
         }, builder: (context, state) {
       if (state is UserProfileScreenInitial) {
-        context.read<UserProfileScreenCubit>().retrieveData(args.user);
-      }
-      if (state is Loading) {
-        return Container(
-          color: Colors.white,
-          child: Center(
-            child: SpinKitChasingDots(
-              color: Colors.blue,
-              size: 50.0,
-            ),
-          ),
-        );
+        context.read<UserProfileScreenCubit>().retrieveData(args.user, args.userID);
       }
       if (state is LoadedData) {
         return Scaffold(
@@ -69,7 +58,7 @@ class UserProfileScreenWidget extends StatelessWidget {
           ),
           body: Column(
             children: [
-              _userProfileHeaderWidget(context, args.user),
+              _userProfileHeaderWidget(context, state.user),
               _tabBarContainer(context, state),
             ],
           ),
@@ -77,6 +66,12 @@ class UserProfileScreenWidget extends StatelessWidget {
       }
       return Container(
         color: Colors.white,
+        child: Center(
+          child: SpinKitChasingDots(
+            color: Colors.blue,
+            size: 50.0,
+          ),
+        ),
       );
     });
   }
@@ -99,12 +94,20 @@ class UserProfileScreenWidget extends StatelessWidget {
               Container(
                 width: 16,
               ),
-              Container(
+              GestureDetector(
+                onTap: () {
+                  Alert(
+                      context: context,
+                      title: "Already There",
+                      desc: "You're already viewing the users profile that you have tapped into")
+                      .show();
+                },
+                child: Container(
                 width: 90,
                 height: 90,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
-              ),
+              )),
               Container(
                 width: 8,
               ),
@@ -212,12 +215,20 @@ class UserProfileScreenWidget extends StatelessWidget {
               Container(
                 width: 16,
               ),
-              Container(
+              GestureDetector(
+                onTap: () {
+                  Alert(
+                      context: context,
+                      title: "Already There",
+                      desc: "You're already viewing the users profile that you have tapped into")
+                      .show();
+                },
+                child: Container(
                 width: 60,
                 height: 60,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
-              ),
+              )),
               Container(
                 width: 8,
               ),

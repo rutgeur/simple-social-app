@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:simple_social_app/flows/post-screen/post_screen_cubit.dart';
+import 'package:simple_social_app/flows/user-profile-screen/user_profile_screen_widget.dart';
 import 'package:simple_social_app/models/comment.dart';
 import 'package:simple_social_app/models/post.dart';
 
@@ -26,23 +27,12 @@ class PostScreenWidget extends StatelessWidget {
         Alert(
                 context: context,
                 title: "Error",
-                desc: "Something went wrong retrieving comments")
+                desc: "Something went wrong retrieving data")
             .show();
       }
     }, builder: (context, state) {
       if (state is PostScreenInitial) {
         context.read<PostScreenCubit>().retrieveData(args.post);
-      }
-      if (state is Loading) {
-        return Container(
-          color: Colors.white,
-          child: Center(
-            child: SpinKitChasingDots(
-              color: Colors.blue,
-              size: 50.0,
-            ),
-          ),
-        );
       }
       if (state is LoadedData) {
         return Scaffold(
@@ -60,6 +50,12 @@ class PostScreenWidget extends StatelessWidget {
       }
       return Container(
         color: Colors.white,
+        child: Center(
+          child: SpinKitChasingDots(
+            color: Colors.blue,
+            size: 50.0,
+          ),
+        ),
       );
     });
   }
@@ -82,11 +78,17 @@ class PostScreenWidget extends StatelessWidget {
               Container(
                 width: 16,
               ),
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/user-profile',
+                      arguments: UserProfileScreenWidgetArguments(null, post.userId));
+                },
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
+                ),
               ),
               Container(
                 width: 8,
@@ -149,12 +151,17 @@ class PostScreenWidget extends StatelessWidget {
                 Container(
                   width: 16,
                 ),
-                Container(
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/user-profile',
+                        arguments: UserProfileScreenWidgetArguments(null, 1));
+                  },
+                  child: Container(
                   width: 60,
                   height: 60,
                   decoration:
                       BoxDecoration(shape: BoxShape.circle, color: Colors.pink),
-                ),
+                )),
                 Container(
                   width: 8,
                 ),

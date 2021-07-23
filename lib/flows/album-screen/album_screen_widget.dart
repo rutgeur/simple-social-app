@@ -28,23 +28,12 @@ class AlbumScreenWidget extends StatelessWidget {
         Alert(
                 context: context,
                 title: "Error",
-                desc: "Something went wrong retrieving comments")
+                desc: "Something went wrong retrieving data")
             .show();
       }
     }, builder: (context, state) {
       if (state is AlbumScreenInitial) {
         context.read<AlbumScreenCubit>().retrieveData(args.album);
-      }
-      if (state is Loading) {
-        return Container(
-          color: Colors.white,
-          child: Center(
-            child: SpinKitChasingDots(
-              color: Colors.blue,
-              size: 50.0,
-            ),
-          ),
-        );
       }
       if (state is LoadedData) {
         return Scaffold(
@@ -62,6 +51,12 @@ class AlbumScreenWidget extends StatelessWidget {
       }
       return Container(
         color: Colors.white,
+        child: Center(
+          child: SpinKitChasingDots(
+            color: Colors.blue,
+            size: 50.0,
+          ),
+        ),
       );
     });
   }

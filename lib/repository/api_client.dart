@@ -123,6 +123,17 @@ class APIClient {
     throw _handleHTTPException(response);
   }
 
+  Future<void> deletePost(String postID) async {
+    final uri = Uri.parse(BASE_URL + "/posts/$postID");
+    final response = await this.httpClient.delete(uri);
+
+    if (response.statusCode == 200) {
+      return;
+    }
+
+    throw _handleHTTPException(response);
+  }
+
   Future<APIException> _handleHTTPException(http.Response response) {
     APIException apiException;
     try {

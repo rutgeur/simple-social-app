@@ -5,6 +5,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:simple_social_app/flows/album-screen/album_screen_widget.dart';
 import 'package:simple_social_app/flows/post-screen/post_screen_widget.dart';
 import 'package:simple_social_app/flows/user-profile-screen/user_profile_screen_cubit.dart';
+import 'package:simple_social_app/helpers/constants.dart';
 import 'package:simple_social_app/models/album.dart';
 import 'package:simple_social_app/models/post.dart';
 import 'package:simple_social_app/models/user.dart';
@@ -192,12 +193,12 @@ class UserProfileScreenWidget extends StatelessWidget {
         child: ListView.builder(
           itemCount: state.posts.length,
           itemBuilder: (context, position) {
-            return _postWidget(context, state.posts[position]);
+            return _postWidget(context, state, state.posts[position]);
           },
         ));
   }
 
-  Widget _postWidget(BuildContext context, Post post) {
+  Widget _postWidget(BuildContext context, LoadedData state, Post post) {
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -262,7 +263,36 @@ class UserProfileScreenWidget extends StatelessWidget {
                 Navigator.pushNamed(context, '/post-screen',
                     arguments: PostScreenWidgetArguments(post));
               },
-              child: Text("View Comments"))
+              child: Text("View Comments")),
+          post.userId.toString() == OWN_USER_ID
+              ? TextButton(
+              onPressed: () {
+                Alert(
+                    context: context,
+                    title: "Deleting Post",
+                    buttons: [
+                      DialogButton(
+                        color: Colors.blue,
+                        child: Text(
+                          "Confirm",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        onPressed: () => {
+                          Navigator.pop(context),
+                        context.read<UserProfileScreenCubit>().deletePost(state.user, post)
+                        },
+                        width: 160,
+                      )
+                    ],
+                    desc:
+                    "Your post will be deleted. After your post is deleted the screen will be refreshed. Since this is a mock back-end the post will not really disappear though.")
+                    .show();
+
+              },
+              child: Text("Delete Post", style: TextStyle(color: Colors.red)))
+              : Container(),
         ],
       ),
     );

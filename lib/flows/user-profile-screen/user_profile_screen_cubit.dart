@@ -30,4 +30,14 @@ class UserProfileScreenCubit extends Cubit<UserProfileScreenState> {
       emit(Error());
     }
   }
+
+  Future<void> deletePost(User user, Post post) async {
+    emit(Loading());
+    try {
+      await _apiRepository.deletePost(post.id.toString());
+      retrieveData(user, null);
+    } catch (APIError) {
+      emit(Error());
+    }
+  }
 }

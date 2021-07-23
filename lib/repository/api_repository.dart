@@ -38,4 +38,8 @@ class APIRepository {
   Future<List<Photo>> getPhotosForAlbum(String albumID) async {
     return apiClient.getPhotosForAlbum(albumID.trim());
   }
+
+  Future<void> deletePost(String postID) async {
+    return apiClient.deletePost(postID.trim());
+  }
 }

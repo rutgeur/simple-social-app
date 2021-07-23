@@ -6,6 +6,7 @@ import 'package:simple_social_app/flows/home-screen/home_screen_cubit.dart';
 import 'package:simple_social_app/flows/landing-page/landing_page_widget.dart';
 import 'package:simple_social_app/flows/post-screen/post_screen_widget.dart';
 import 'package:simple_social_app/flows/user-profile-screen/user_profile_screen_widget.dart';
+import 'package:simple_social_app/helpers/constants.dart';
 import 'package:simple_social_app/models/post.dart';
 
 class HomeScreenWidget extends StatelessWidget {
@@ -61,7 +62,8 @@ class HomeScreenWidget extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, '/user-profile',
-                    arguments: UserProfileScreenWidgetArguments(state.user, null));
+                    arguments:
+                        UserProfileScreenWidgetArguments(state.user, null));
               },
               child: DrawerHeader(
                   decoration: BoxDecoration(
@@ -126,7 +128,8 @@ class HomeScreenWidget extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, '/user-profile',
-                      arguments: UserProfileScreenWidgetArguments(null, post.userId));
+                      arguments:
+                          UserProfileScreenWidgetArguments(null, post.userId));
                 },
                 child: Container(
                   width: 60,
@@ -168,7 +171,14 @@ class HomeScreenWidget extends StatelessWidget {
                 Navigator.pushNamed(context, '/post-screen',
                     arguments: PostScreenWidgetArguments(post));
               },
-              child: Text("View Comments"))
+              child: Text("View Comments")),
+          post.userId.toString() == OWN_USER_ID
+              ? TextButton(
+                  onPressed: () {
+                    // TODO: Trigger delete post
+                  },
+                  child: Text("Delete Post", style: TextStyle(color: Colors.red)))
+              : Container(),
         ],
       ),
     );

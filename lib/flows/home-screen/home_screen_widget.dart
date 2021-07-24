@@ -16,6 +16,7 @@ class HomeScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeScreenCubit, HomeScreenState>(
+      key: Key("HomeScreenBlocKey"),
         listener: (context, state) {
       if (state is Error) {
         Alert(
@@ -36,7 +37,6 @@ class HomeScreenWidget extends StatelessWidget {
         context.read<HomeScreenCubit>().logInAndRetrieveData();
       }
       if (state is LoadedData) {
-
         return WillPopScope(
             onWillPop: () async => false,
             child: Scaffold(
@@ -146,6 +146,7 @@ class HomeScreenWidget extends StatelessWidget {
             ));
       }
       return Container(
+        key: Key("HomeScreenLoadingContainerKey"),
         color: Colors.white,
         child: Center(
           child: SpinKitChasingDots(

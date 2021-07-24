@@ -31,4 +31,24 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
     prefs.setBool(LOGGED_IN_KEY, false);
     emit(LoggedOut());
   }
+
+  Future<void> deletePost(Post post) async {
+    emit(Loading());
+    try {
+      await _apiRepository.deletePost(post.id.toString());
+      logInAndRetrieveData();
+    } catch (APIError) {
+      emit(Error());
+    }
+  }
+
+  Future<void> addPost(String title, String body) async {
+    emit(Loading());
+    try {
+      await _apiRepository.addPost(title, body, int.parse(OWN_USER_ID));
+      logInAndRetrieveData();
+    } catch (APIError) {
+      emit(Error());
+    }
+  }
 }

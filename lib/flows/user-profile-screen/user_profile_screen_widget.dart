@@ -23,24 +23,23 @@ class UserProfileScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute
-        .of(context)!
-        .settings
-        .arguments
-    as UserProfileScreenWidgetArguments;
+    final args = ModalRoute.of(context)!.settings.arguments
+        as UserProfileScreenWidgetArguments;
 
     return BlocConsumer<UserProfileScreenCubit, UserProfileScreenState>(
         listener: (context, state) {
-          if (state is Error) {
-            Alert(
+      if (state is Error) {
+        Alert(
                 context: context,
                 title: "Error",
                 desc: "Something went wrong retrieving data")
-                .show();
-          }
-        }, builder: (context, state) {
+            .show();
+      }
+    }, builder: (context, state) {
       if (state is UserProfileScreenInitial) {
-        context.read<UserProfileScreenCubit>().retrieveData(args.user, args.userID);
+        context
+            .read<UserProfileScreenCubit>()
+            .retrieveData(args.user, args.userID);
       }
       if (state is LoadedData) {
         return Scaffold(
@@ -96,19 +95,21 @@ class UserProfileScreenWidget extends StatelessWidget {
                 width: 16,
               ),
               GestureDetector(
-                onTap: () {
-                  Alert(
-                      context: context,
-                      title: "Already There",
-                      desc: "You're already viewing the users profile that you have tapped into")
-                      .show();
-                },
-                child: Container(
-                width: 90,
-                height: 90,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
-              )),
+                  onTap: () {
+                    Alert(
+                            context: context,
+                            title: "Already There",
+                            desc:
+                                "You're already viewing the users profile that you have tapped into")
+                        .show();
+                  },
+                  child: Container(
+                    child: Icon(Icons.person),
+                    width: 90,
+                    height: 90,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
+                  )),
               Container(
                 width: 8,
               ),
@@ -178,24 +179,27 @@ class UserProfileScreenWidget extends StatelessWidget {
   Widget _tabBarContainer(BuildContext context, LoadedData state) {
     return Expanded(
         child: ContainedTabBarView(
-          tabs: [
-            Text("Posts", style: TextStyle(color: Colors.black)),
-            Text("Albums", style: TextStyle(color: Colors.black)),
-          ],
-          views: [_postsContainer(context, state), _albumsContainer(context, state)],
-        )
-      // child:
-    );
+      tabs: [
+        Text("Posts", style: TextStyle(color: Colors.black)),
+        Text("Albums", style: TextStyle(color: Colors.black)),
+      ],
+      views: [
+        _postsContainer(context, state),
+        _albumsContainer(context, state)
+      ],
+    )
+        // child:
+        );
   }
 
   Widget _postsContainer(BuildContext context, LoadedData state) {
     return Expanded(
         child: ListView.builder(
-          itemCount: state.posts.length,
-          itemBuilder: (context, position) {
-            return _postWidget(context, state, state.posts[position]);
-          },
-        ));
+      itemCount: state.posts.length,
+      itemBuilder: (context, position) {
+        return _postWidget(context, state, state.posts[position]);
+      },
+    ));
   }
 
   Widget _postWidget(BuildContext context, LoadedData state, Post post) {
@@ -217,19 +221,21 @@ class UserProfileScreenWidget extends StatelessWidget {
                 width: 16,
               ),
               GestureDetector(
-                onTap: () {
-                  Alert(
-                      context: context,
-                      title: "Already There",
-                      desc: "You're already viewing the users profile that you have tapped into")
-                      .show();
-                },
-                child: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
-              )),
+                  onTap: () {
+                    Alert(
+                            context: context,
+                            title: "Already There",
+                            desc:
+                                "You're already viewing the users profile that you have tapped into")
+                        .show();
+                  },
+                  child: Container(
+                    child: Icon(Icons.person),
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
+                  )),
               Container(
                 width: 8,
               ),
@@ -266,32 +272,34 @@ class UserProfileScreenWidget extends StatelessWidget {
               child: Text("View Comments")),
           post.userId.toString() == OWN_USER_ID
               ? TextButton(
-              onPressed: () {
-                Alert(
-                    context: context,
-                    title: "Deleting Post",
-                    buttons: [
-                      DialogButton(
-                        color: Colors.blue,
-                        child: Text(
-                          "Confirm",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        onPressed: () => {
-                          Navigator.pop(context),
-                        context.read<UserProfileScreenCubit>().deletePost(state.user, post)
-                        },
-                        width: 160,
-                      )
-                    ],
-                    desc:
-                    "Your post will be deleted. After your post is deleted the screen will be refreshed. Since this is a mock back-end the post will not really disappear though.")
-                    .show();
-
-              },
-              child: Text("Delete Post", style: TextStyle(color: Colors.red)))
+                  onPressed: () {
+                    Alert(
+                            context: context,
+                            title: "Deleting Post",
+                            buttons: [
+                              DialogButton(
+                                color: Colors.blue,
+                                child: Text(
+                                  "Confirm",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                onPressed: () => {
+                                  Navigator.pop(context),
+                                  context
+                                      .read<UserProfileScreenCubit>()
+                                      .deletePost(state.user, post)
+                                },
+                                width: 160,
+                              )
+                            ],
+                            desc:
+                                "Your post will be deleted. After your post is deleted the screen will be refreshed. Since this is a mock back-end the post will not really disappear though.")
+                        .show();
+                  },
+                  child:
+                      Text("Delete Post", style: TextStyle(color: Colors.red)))
               : Container(),
         ],
       ),
@@ -301,11 +309,11 @@ class UserProfileScreenWidget extends StatelessWidget {
   Widget _albumsContainer(BuildContext context, LoadedData state) {
     return Expanded(
         child: ListView.builder(
-          itemCount: state.albums.length,
-          itemBuilder: (context, position) {
-            return _albumWidget(context, state.albums[position]);
-          },
-        ));
+      itemCount: state.albums.length,
+      itemBuilder: (context, position) {
+        return _albumWidget(context, state.albums[position]);
+      },
+    ));
   }
 
   Widget _albumWidget(BuildContext context, Album album) {

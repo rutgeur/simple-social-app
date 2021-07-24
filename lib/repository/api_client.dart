@@ -134,6 +134,34 @@ class APIClient {
     throw _handleHTTPException(response);
   }
 
+  Future<void> updatePost(int postID, int userID, String title, String body) async {
+    final uri = Uri.parse(BASE_URL + "/posts/$postID");
+
+    String postBody = '{"id": $postID, "title": "$title", "body": "$body", "userId": $userID}';
+
+    final response = await this.httpClient.put(uri, body: postBody);
+
+    if (response.statusCode == 200) {
+      return;
+    }
+
+    throw _handleHTTPException(response);
+  }
+
+  Future<void> addPost(String title, String body, int userID) async {
+    final uri = Uri.parse(BASE_URL + "/posts");
+
+    String postBody = '{"title": "$title", "body": "$body", "userId": $userID}';
+
+    final response = await this.httpClient.post(uri, body: postBody);
+
+    if (response.statusCode == 201) {
+      return;
+    }
+
+    throw _handleHTTPException(response);
+  }
+
   Future<APIException> _handleHTTPException(http.Response response) {
     APIException apiException;
     try {

@@ -42,4 +42,12 @@ class APIRepository {
   Future<void> deletePost(String postID) async {
     return apiClient.deletePost(postID.trim());
   }
+
+  Future<void> updatePost(int postID, int userID, String title, String body) async {
+    return apiClient.updatePost(postID, userID, title.trim(), body.trim());
+  }
+  Future<void> addPost(String title, String body, int userID) async {
+    return apiClient.addPost(title.trim(), body.trim(), userID);
+  }
+
 }

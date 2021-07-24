@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:simple_social_app/flows/post-screen/post_screen_cubit.dart';
 import 'package:simple_social_app/flows/user-profile-screen/user_profile_screen_widget.dart';
+import 'package:simple_social_app/helpers/constants.dart';
 import 'package:simple_social_app/models/comment.dart';
 import 'package:simple_social_app/models/post.dart';
 
@@ -14,12 +15,16 @@ class PostScreenWidgetArguments {
 }
 
 class PostScreenWidget extends StatelessWidget {
-  const PostScreenWidget() : super();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController bodyController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as PostScreenWidgetArguments;
+
+    titleController.text = args.post.title;
+    bodyController.text = args.post.body;
 
     return BlocConsumer<PostScreenCubit, PostScreenState>(
         listener: (context, state) {
@@ -37,6 +42,104 @@ class PostScreenWidget extends StatelessWidget {
       if (state is LoadedData) {
         return Scaffold(
           appBar: AppBar(
+            actions: <Widget>[
+              args.post.userId.toString() == OWN_USER_ID
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      ),
+                      onPressed: () => {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (_) {
+                            return Container(
+                              padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom,
+                              ),
+                              child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Container(
+                                      height: 32,
+                                    ),
+                                    Text(
+                                      "Edit Post",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(32, 0, 32, 0),
+                                        child: TextField(
+                                            minLines: 1,
+                                            maxLines: 3,
+                                            controller: titleController,
+                                            decoration: InputDecoration(
+                                                labelText: "Title"))),
+                                    Container(
+                                      height: 16,
+                                    ),
+                                    Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(32, 0, 32, 0),
+                                        child: TextField(
+                                            minLines: 2,
+                                            maxLines: 5,
+                                            controller: bodyController,
+                                            decoration: InputDecoration(
+                                                labelText: "Body"))),
+                                    Container(
+                                      height: 16,
+                                    ),
+                                    TextButton(
+                                        onPressed: () {
+                                          Alert(
+                                                  context: context,
+                                                  title: "Editing Post",
+                                                  buttons: [
+                                                    DialogButton(
+                                                      color: Colors.blue,
+                                                      child: Text(
+                                                        "Confirm",
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      onPressed: () => {
+                                                        Navigator.pop(context),
+                                                        Navigator.pop(context),
+                                                        context
+                                                            .read<
+                                                                PostScreenCubit>()
+                                                            .updatePost(
+                                                                args.post,
+                                                                titleController
+                                                                    .text,
+                                                                bodyController
+                                                                    .text)
+                                                      },
+                                                      width: 160,
+                                                    )
+                                                  ],
+                                                  desc:
+                                                      "Your post will be edited. After your post is edited the screen will be refreshed. Since this is a mock back-end the post will not really be updated though.")
+                                              .show();
+                                        },
+                                        child: Text("Save Edits")),
+                                    Container(
+                                      height: 32,
+                                    ),
+                                  ]),
+                            );
+                          },
+                        )
+                      },
+                    )
+                  : Container()
+            ],
             title: Text("Post Details"),
             centerTitle: true,
           ),
@@ -81,9 +184,11 @@ class PostScreenWidget extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, '/user-profile',
-                      arguments: UserProfileScreenWidgetArguments(null, post.userId));
+                      arguments:
+                          UserProfileScreenWidgetArguments(null, post.userId));
                 },
                 child: Container(
+                  child: Icon(Icons.person),
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
@@ -151,19 +256,21 @@ class PostScreenWidget extends StatelessWidget {
                 Container(
                   width: 16,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/user-profile',
-                        arguments: UserProfileScreenWidgetArguments(null, 1));
-                  },
-                  child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration:
-                      BoxDecoration(shape: BoxShape.circle, color: Colors.pink),
-                )),
+                Flexible(
+                  child: Text(
+                    comment.email,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                )
+              ],
+            ),
+            Container(
+              height: 8,
+            ),
+            Row(
+              children: [
                 Container(
-                  width: 8,
+                  width: 16,
                 ),
                 Flexible(
                   child: Text(

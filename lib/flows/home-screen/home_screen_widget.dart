@@ -10,7 +10,8 @@ import 'package:simple_social_app/helpers/constants.dart';
 import 'package:simple_social_app/models/post.dart';
 
 class HomeScreenWidget extends StatelessWidget {
-  const HomeScreenWidget() : super();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController bodyController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +36,113 @@ class HomeScreenWidget extends StatelessWidget {
         context.read<HomeScreenCubit>().logInAndRetrieveData();
       }
       if (state is LoadedData) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text("News Feed"),
-            centerTitle: true,
-          ),
-          drawer: _drawerContainer(context, state),
-          body: Column(children: [_postsContainer(context, state)]),
-        );
+        titleController.text = "";
+        bodyController.text = "";
+        return WillPopScope(
+            onWillPop: () async => false,
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text("News Feed"),
+                centerTitle: true,
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                    onPressed: () => {
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (_) {
+                          return Container(
+                            padding: EdgeInsets.only(
+                              bottom:
+                              MediaQuery.of(context).viewInsets.bottom,
+                            ),
+                            child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Container(
+                                    height: 32,
+                                  ),
+                                  Text(
+                                    "Add Post",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Padding(
+                                      padding:
+                                      EdgeInsets.fromLTRB(32, 0, 32, 0),
+                                      child: TextField(
+                                          minLines: 1,
+                                          maxLines: 3,
+                                          controller: titleController,
+                                          decoration: InputDecoration(
+                                              labelText: "Title"))),
+                                  Container(
+                                    height: 16,
+                                  ),
+                                  Padding(
+                                      padding:
+                                      EdgeInsets.fromLTRB(32, 0, 32, 0),
+                                      child: TextField(
+                                          minLines: 2,
+                                          maxLines: 5,
+                                          controller: bodyController,
+                                          decoration: InputDecoration(
+                                              labelText: "Body"))),
+                                  Container(
+                                    height: 16,
+                                  ),
+                                  TextButton(
+                                      onPressed: () {
+                                        Alert(
+                                            context: context,
+                                            title: "Adding Post",
+                                            buttons: [
+                                              DialogButton(
+                                                color: Colors.blue,
+                                                child: Text(
+                                                  "Confirm",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                onPressed: () => {
+                                                  Navigator.pop(context),
+                                                  Navigator.pop(context),
+                                                  context
+                                                      .read<
+                                                      HomeScreenCubit>()
+                                                      .addPost(
+                                                      titleController
+                                                          .text,
+                                                      bodyController
+                                                          .text)
+                                                },
+                                                width: 160,
+                                              )
+                                            ],
+                                            desc:
+                                            "Your post will be added. After your post is added the screen will be refreshed. Since this is a mock back-end the post will not really be added though.")
+                                            .show();
+                                      },
+                                      child: Text("Upload")),
+                                  Container(
+                                    height: 32,
+                                  ),
+                                ]),
+                          );
+                        },
+                      )
+                    },
+                  )
+                ],
+              ),
+              drawer: _drawerContainer(context, state),
+              body: Column(children: [_postsContainer(context, state)]),
+            ));
       }
       return Container(
         color: Colors.white,
@@ -71,6 +171,7 @@ class HomeScreenWidget extends StatelessWidget {
                   ),
                   child: Row(children: [
                     Container(
+                      child: Icon(Icons.person),
                       width: 60,
                       height: 60,
                       decoration: BoxDecoration(
@@ -132,6 +233,9 @@ class HomeScreenWidget extends StatelessWidget {
                           UserProfileScreenWidgetArguments(null, post.userId));
                 },
                 child: Container(
+                  child: Icon(
+                    Icons.person
+                  ),
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
@@ -175,9 +279,31 @@ class HomeScreenWidget extends StatelessWidget {
           post.userId.toString() == OWN_USER_ID
               ? TextButton(
                   onPressed: () {
-                    // TODO: Trigger delete post
+                    Alert(
+                        context: context,
+                        title: "Deleting Post",
+                        buttons: [
+                          DialogButton(
+                            color: Colors.blue,
+                            child: Text(
+                              "Confirm",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            onPressed: () => {
+                              Navigator.pop(context),
+                              context.read<HomeScreenCubit>().deletePost(post)
+                            },
+                            width: 160,
+                          )
+                        ],
+                        desc:
+                        "Your post will be deleted. After your post is deleted the screen will be refreshed. Since this is a mock back-end the post will not really disappear though.")
+                        .show();
                   },
-                  child: Text("Delete Post", style: TextStyle(color: Colors.red)))
+                  child:
+                      Text("Delete Post", style: TextStyle(color: Colors.red)))
               : Container(),
         ],
       ),

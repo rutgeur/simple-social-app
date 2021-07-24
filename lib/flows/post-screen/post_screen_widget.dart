@@ -119,7 +119,9 @@ class PostScreenWidget extends StatelessWidget {
                                                                 titleController
                                                                     .text,
                                                                 bodyController
-                                                                    .text)
+                                                                    .text),
+                                                        titleController.text = "",
+                                                        bodyController.text = ""
                                                       },
                                                       width: 160,
                                                     )

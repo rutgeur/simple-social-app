@@ -36,8 +36,7 @@ class HomeScreenWidget extends StatelessWidget {
         context.read<HomeScreenCubit>().logInAndRetrieveData();
       }
       if (state is LoadedData) {
-        titleController.text = "";
-        bodyController.text = "";
+
         return WillPopScope(
             onWillPop: () async => false,
             child: Scaffold(
@@ -119,7 +118,9 @@ class HomeScreenWidget extends StatelessWidget {
                                                       titleController
                                                           .text,
                                                       bodyController
-                                                          .text)
+                                                          .text),
+                                                  titleController.text = "",
+                                                  bodyController.text = ""
                                                 },
                                                 width: 160,
                                               )

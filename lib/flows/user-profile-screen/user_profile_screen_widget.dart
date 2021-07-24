@@ -187,13 +187,11 @@ class UserProfileScreenWidget extends StatelessWidget {
         _postsContainer(context, state),
         _albumsContainer(context, state)
       ],
-    )
-        // child:
-        );
+    ));
   }
 
   Widget _postsContainer(BuildContext context, LoadedData state) {
-    return Expanded(
+    return Container(
         child: ListView.builder(
       itemCount: state.posts.length,
       itemBuilder: (context, position) {
@@ -307,7 +305,7 @@ class UserProfileScreenWidget extends StatelessWidget {
   }
 
   Widget _albumsContainer(BuildContext context, LoadedData state) {
-    return Expanded(
+    return Container(
         child: ListView.builder(
       itemCount: state.albums.length,
       itemBuilder: (context, position) {

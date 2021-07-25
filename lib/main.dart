@@ -34,81 +34,86 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/splash-screen',
-        onGenerateRoute: (settings) {
-          switch (settings.name) {
-            case '/splash-screen':
-              return PageTransition(
-                  child: BlocProvider(
-                    create: (context) => SplashScreenCubit(),
-                    child: SplashScreenWidget(),
-                  ),
-                  type: PageTransitionType.rightToLeft,
-                  settings: settings);
-            case '/landing-page':
-              return PageTransition(
-                  child: LandingPageWidget(),
-                  type: PageTransitionType.rightToLeft,
-                  settings: settings);
-            case '/create-account':
-              return PageTransition(
-                  child: CreateAccountScreenWidget(),
-                  type: PageTransitionType.rightToLeft,
-                  settings: settings);
-            case '/login':
-              return PageTransition(
-                  child: LoginScreenWidget(),
-                  type: PageTransitionType.rightToLeft,
-                  settings: settings);
-            case '/home-screen':
-              return PageTransition(
-                  child: BlocProvider(
-                      create: (context) => HomeScreenCubit(APIRepository(
-                          apiClient: APIClient(httpClient: http.Client()))),
-                      child: HomeScreenWidget()),
-                  type: PageTransitionType.rightToLeft,
-                  settings: settings);
-            case '/back-to-home-screen':
-              return PageTransition(
-                  child: BlocProvider(
-                      create: (context) => HomeScreenCubit(APIRepository(
-                          apiClient: APIClient(httpClient: http.Client()))),
-                      child: HomeScreenWidget()),
-                  type: PageTransitionType.fade,
-                  settings: settings);
-            case '/post-screen':
-              return PageTransition(
-                  child: BlocProvider(
-                      create: (context) => PostScreenCubit(APIRepository(
-                          apiClient: APIClient(httpClient: http.Client()))),
-                      child: PostScreenWidget()),
-                  type: PageTransitionType.rightToLeft,
-                  settings: settings);
-            case '/user-profile':
-              return PageTransition(
-                  child: BlocProvider(
-                      create: (context) => UserProfileScreenCubit(APIRepository(
-                          apiClient: APIClient(httpClient: http.Client()))),
-                      child: UserProfileScreenWidget()),
-                  type: PageTransitionType.rightToLeft,
-                  settings: settings);
-            case '/album':
-              return PageTransition(
-                  child: BlocProvider(
-                      create: (context) => AlbumScreenCubit(APIRepository(
-                          apiClient: APIClient(httpClient: http.Client()))),
-                      child: AlbumScreenWidget()),
-                  type: PageTransitionType.rightToLeft,
-                  settings: settings);
-            default:
-              return null;
-          }
-        });
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/splash-screen',
+          onGenerateRoute: (settings) {
+            switch (settings.name) {
+              case '/splash-screen':
+                return PageTransition(
+                    child: BlocProvider(
+                      create: (context) => SplashScreenCubit(),
+                      child: SplashScreenWidget(),
+                    ),
+                    type: PageTransitionType.rightToLeft,
+                    settings: settings);
+              case '/landing-page':
+                return PageTransition(
+                    child: LandingPageWidget(),
+                    type: PageTransitionType.rightToLeft,
+                    settings: settings);
+              case '/create-account':
+                return PageTransition(
+                    child: CreateAccountScreenWidget(),
+                    type: PageTransitionType.rightToLeft,
+                    settings: settings);
+              case '/login':
+                return PageTransition(
+                    child: LoginScreenWidget(),
+                    type: PageTransitionType.rightToLeft,
+                    settings: settings);
+              case '/home-screen':
+                return PageTransition(
+                    child: BlocProvider(
+                        create: (context) => HomeScreenCubit(APIRepository(
+                            apiClient: APIClient(httpClient: http.Client()))),
+                        child: HomeScreenWidget()),
+                    type: PageTransitionType.rightToLeft,
+                    settings: settings);
+              case '/back-to-home-screen':
+                return PageTransition(
+                    child: BlocProvider(
+                        create: (context) => HomeScreenCubit(APIRepository(
+                            apiClient: APIClient(httpClient: http.Client()))),
+                        child: HomeScreenWidget()),
+                    type: PageTransitionType.fade,
+                    settings: settings);
+              case '/post-screen':
+                return PageTransition(
+                    child: BlocProvider(
+                        create: (context) => PostScreenCubit(APIRepository(
+                            apiClient: APIClient(httpClient: http.Client()))),
+                        child: PostScreenWidget()),
+                    type: PageTransitionType.rightToLeft,
+                    settings: settings);
+              case '/user-profile':
+                return PageTransition(
+                    child: BlocProvider(
+                        create: (context) => UserProfileScreenCubit(
+                            APIRepository(
+                                apiClient:
+                                    APIClient(httpClient: http.Client()))),
+                        child: UserProfileScreenWidget()),
+                    type: PageTransitionType.rightToLeft,
+                    settings: settings);
+              case '/album':
+                return PageTransition(
+                    child: BlocProvider(
+                        create: (context) => AlbumScreenCubit(APIRepository(
+                            apiClient: APIClient(httpClient: http.Client()))),
+                        child: AlbumScreenWidget()),
+                    type: PageTransitionType.rightToLeft,
+                    settings: settings);
+              default:
+                return null;
+            }
+          }),
+    );
   }
 }

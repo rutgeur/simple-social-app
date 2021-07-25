@@ -2,15 +2,7 @@
 
 An example of how to implement APIs using Cubit architecture.
 
-## Getting Started
-
-To compile: `flutter run`
-
-To compile release mode: `flutter run --release`
-
-To compile a build for the Play Store: `flutter build appbundle`
-
-
-
-To generate API responses/models:
-https://javiercbk.github.io/json_to_dart/
+To run the project:
+1 - Install Flutter: https://flutter.dev/docs/get-started/install
+2 - Make sure you're in the root of this project
+3 - Run: `flutter run` or `flutter run --release`

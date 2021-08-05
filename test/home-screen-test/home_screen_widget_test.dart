@@ -8,19 +8,16 @@ import 'package:simple_social_app/flows/home-screen/home_screen_widget.dart';
 import 'package:simple_social_app/repository/api_client.dart';
 import 'package:simple_social_app/repository/api_repository.dart';
 
-class MockHomeScreenCubit extends MockCubit<HomeScreenState> implements HomeScreenCubit {}
+class MockHomeScreenCubit extends MockCubit<HomeScreenState>
+    implements HomeScreenCubit {}
 
 void main() {
   testWidgets('HomeScreenWidget test', (WidgetTester tester) async {
-    final widget = Directionality(
-      child: MediaQuery(
-        data: MediaQueryData(),
-        child: BlocProvider(
-            create: (context) => HomeScreenCubit(APIRepository(
-                apiClient: APIClient(httpClient: http.Client()))),
-            child: HomeScreenWidget()),
-      ),
-      textDirection: TextDirection.ltr,
+    final widget = MaterialApp(
+      home: BlocProvider(
+          create: (context) => HomeScreenCubit(
+              APIRepository(apiClient: APIClient(httpClient: http.Client()))),
+          child: HomeScreenWidget()),
     );
 
     await tester.pumpWidget(widget);

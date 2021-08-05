@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_social_app/flows/home-screen/home_screen_cubit.dart';
 import 'package:simple_social_app/models/post.dart';
 
@@ -13,6 +14,7 @@ void main() {
     setUp(() {
       mockAPIRepository = MockAPIRepository();
       homeScreenCubit = HomeScreenCubit(mockAPIRepository);
+      SharedPreferences.setMockInitialValues({});
     });
 
     blocTest<HomeScreenCubit, HomeScreenState>(
